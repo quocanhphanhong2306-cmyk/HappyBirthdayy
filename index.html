@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chúc Mừng Sinh Nhật</title>
+    <style>
+      /* === CÀI ĐẶT CHUNG === */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden; /* Ẩn thanh cuộn để làm hiệu ứng tịnh tiến */
+        background-color: #9a9af0;
+      }
+
+      /* Container chính chứa 5 trang, dùng để kéo tịnh tiến */
+      #main-container {
+        width: 100vw;
+        height: 100vh;
+        /* Hiệu ứng mượt mà như Canva */
+        transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+
+      /* Khung của mỗi trang */
+      .page {
+        width: 100vw;
+        height: 100vh;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        position: relative;
+      }
+
+      /* === CHỮ VÀ ICON === */
+      .content-box {
+        text-align: center;
+        z-index: 10;
+      }
+      .icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-size: 2rem;
+        color: #fff;
+        margin-bottom: 5px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      p {
+        font-size: 1rem;
+        color: #eee;
+      }
+
+      /* === NÚT CON MÈO === */
+      #cat-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background-color: #fff;
+        border: none;
+        border-radius: 50%;
+        font-size: 35px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 999;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #cat-btn:active {
+        transform: scale(0.9);
+      }
+
+      /* === ĐỊNH DẠNG ẢNH CHUNG === */
+      .gallery {
+        width: 100%;
+        max-width: 400px;
+        height: 55vh;
+      }
+      .gallery img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* === THIẾT KẾ TRANG 1: Tông Hồng - Layout Lưới Nổi Bật === */
+      .page1 {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      }
+      .layout-1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 2fr 1fr;
+        gap: 10px;
+      }
+      .layout-1 img:nth-child(1) {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+      } /* Ảnh chính to */
+
+      /* === THIẾT KẾ TRANG 2: Tông Vàng - Layout Xếp Trồng (Polaroid) === */
+      .page2 {
+        background: linear-gradient(135deg, #fbe394 0%, #f5a892 100%);
+      }
+      .layout-2 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .layout-2 img {
+        trasnform-origin: center
+        position: absolute;
+        width: 130%;
+        height: 55%;
+        border: 5px solid white;
+      }
+      .layout-2 img:nth-child(1) {
+        transform: rotate(-40deg) translate(-130%, -30%);
+        z-index: 1;
+      }
+      .layout-2 img:nth-child(2) {
+        transform: rotate(10deg) translate(50%, -40%);
+        z-index: 2;
+      }
+      .layout-2 img:nth-child(3) {
+        transform: rotate(-5deg);
+        z-index: 5;
+        width: 55%;
+        height: 50%;
+      } /* Ở giữa */
+      .layout-2 img:nth-child(4) {
+        transform: rotate(20deg) translate(-40%, 40%);
+        z-index: 3;
+      }
+      .layout-2 img:nth-child(5) {
+        transform: rotate(-20deg) translate(40%, 40%);
+        z-index: 4;
+      }
+
+      /* === THIẾT KẾ TRANG 3: Tông Xanh - Layout Hình Tròn === */
+      .page3 {
+        background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+      }
+      .layout-3 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        gap: 15px;
+      }
+      .layout-3 img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid white;
+      }
+      .layout-3 img:nth-child(1) {
+        width: 140px;
+        height: 140px;
+      } /* Ảnh giữa to hơn */
+
+      /* === THIẾT KẾ TRANG 4: Tông Tím - Layout Bậc Thang === */
+      .page4 {
+        background: linear-gradient(135deg, #c471ed 0%, #f64f59 100%);
+      }
+      .layout-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+      .layout-4 img:nth-child(1) {
+        grid-row: span 2;
+        height: 100%;
+      }
+      .layout-4 img:nth-child(2) {
+        height: 80%;
+        transform: translateY(20px);
+      }
+      .layout-4 img:nth-child(3) {
+        height: 80%;
+        transform: translateY(-20px);
+      }
+      .layout-4 img:nth-child(4) {
+        grid-column: span 2;
+        height: 120px;
+      }
+      .layout-4 img:nth-child(5) {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        right: 10%;
+        bottom: 25%;
+        border: 3px solid #fff;
+      }
+
+      /* === THIẾT KẾ TRANG 5: Tông Đen Trắng Đèn Neon - Layout Ziczac === */
+      .page5 {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+      .layout-5 {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 20px;
+      }
+      .layout-5 img {
+        height: 90px;
+        border-radius: 20px;
+      }
+      .layout-5 img:nth-child(odd) {
+        width: 80%;
+        align-self: flex-start;
+      }
+      .layout-5 img:nth-child(even) {
+        width: 80%;
+        align-self: flex-end;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="cat-btn">🐱</button>
+
+    <div id="main-container">
+      <div class="page page1">
+        <div class="content-box">
+          <div class="icon">🎂</div>
+          <h1>Happy Birthday!</h1>
+          <p>Chúc bạn tuổi mới thật rực rỡ và nhiều niềm vui.</p>
+        </div>
+        <div class="gallery layout-1">
+          <img src="https://picsum.photos/400/300?random=1" alt="Ảnh 1" />
+          <img src="https://picsum.photos/200/200?random=2" alt="Ảnh 2" />
+          <img src="https://picsum.photos/200/200?random=3" alt="Ảnh 3" />
+          <img src="https://picsum.photos/200/200?random=4" alt="Ảnh 4" />
+          <img src="https://picsum.photos/200/200?random=5" alt="Ảnh 5" />
+        </div>
+      </div>
+
+      <div class="page page2">
+        <div class="content-box">
+          <div class="icon">🌟</div>
+          <h1>Luôn Tỏa Sáng</h1>
+          <p>Hãy giữ mãi nụ cười trên môi nhé!</p>
+        </div>
+        <div class="gallery layout-2">
+          <img src="https://picsum.photos/300/400?random=6" alt="Ảnh 1" />
+          <img src="https://picsum.photos/300/400?random=7" alt="Ảnh 2" />
+          <img src="https://picsum.photos/400/400?random=8" alt="Ảnh 3" />
+          <img src="https://picsum.photos/300/400?random=9" alt="Ảnh 4" />
+          <img src="https://picsum.photos/300/400?random=10" alt="Ảnh 5" />
+        </div>
+      </div>
+
+      <div class="page page3">
+        <div class="content-box">
+          <div class="icon">🎁</div>
+          <h1>Kỷ Niệm Đẹp</h1>
+          <p>Những khoảnh khắc tuyệt vời nhất của chúng ta.</p>
+        </div>
+        <div class="gallery layout-3">
+          <img src="https://picsum.photos/200/200?random=11" alt="Ảnh 1" />
+          <img src="https://picsum.photos/200/200?random=12" alt="Ảnh 2" />
+          <img src="https://picsum.photos/200/200?random=13" alt="Ảnh 3" />
+          <img src="https://picsum.photos/200/200?random=14" alt="Ảnh 4" />
+          <img src="https://picsum.photos/200/200?random=15" alt="Ảnh 5" />
+        </div>
+      </div>
+
+      <div class="page page4">
+        <div class="content-box">
+          <div class="icon">💖</div>
+          <h1>Yêu Thương</h1>
+          <p>Mong mọi điều tốt đẹp nhất sẽ đến với bạn.</p>
+        </div>
+        <div class="gallery layout-4">
+          <img src="https://picsum.photos/300/500?random=16" alt="Ảnh 1" />
+          <img src="https://picsum.photos/200/300?random=17" alt="Ảnh 2" />
+          <img src="https://picsum.photos/200/300?random=18" alt="Ảnh 3" />
+          <img src="https://picsum.photos/400/200?random=19" alt="Ảnh 4" />
+          <img src="https://picsum.photos/100/100?random=20" alt="Ảnh 5" />
+        </div>
+      </div>
+
+      <div class="page page5">
+        <div class="content-box">
+          <div class="icon">🎉</div>
+          <h1>Cùng Ăn Mừng Nào!</h1>
+          <p>Chuẩn bị thổi nến và cắt bánh thôi.</p>
+        </div>
+        <div class="gallery layout-5">
+          <img src="https://picsum.photos/400/150?random=21" alt="Ảnh 1" />
+          <img src="https://picsum.photos/400/150?random=22" alt="Ảnh 2" />
+          <img src="https://picsum.photos/400/150?random=23" alt="Ảnh 3" />
+          <img src="https://picsum.photos/400/150?random=24" alt="Ảnh 4" />
+          <img src="https://picsum.photos/400/150?random=25" alt="Ảnh 5" />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const catBtn = document.getElementById("cat-btn");
+      const mainContainer = document.getElementById("main-container");
+      const totalPages = 5;
+      let currentPage = 0;
+
+      catBtn.addEventListener("click", () => {
+        // Tăng trang lên 1
+        currentPage++;
+
+        // Nếu đã đến trang cuối (vượt qua index 4), quay lại trang đầu (index 0)
+        if (currentPage >= totalPages) {
+          currentPage = 0;
+        }
+
+        // Tịnh tiến toàn bộ container lên trên theo chiều dọc
+        mainContainer.style.transform = `translateY(-${currentPage * 100}vh)`;
+      });
+    </script>
+  </body>
+</html>
